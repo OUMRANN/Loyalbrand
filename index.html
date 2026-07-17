@@ -213,16 +213,34 @@
   .g-item{
     position:relative;overflow:hidden;
     background:linear-gradient(160deg,#111110 0%,#0a0a09 60%,#050505 100%);
+    /* isolate paint/layout so browser doesn't recalc siblings during transform/scroll */
+    contain:layout paint style;
   }
   .g-item::after{
     content:"";position:absolute;inset:0;
     background:radial-gradient(circle at 30% 20%, rgba(201,162,75,.09), transparent 55%);
   }
-  .g-inner{position:absolute;inset:-6%;will-change:transform;transition:transform .9s var(--ease);}
+  .g-inner{
+    position:absolute;inset:-6%;
+    will-change:transform;
+    transition:transform .9s var(--ease);
+    contain:layout paint style;
+    backface-visibility:hidden;
+  }
   .g-item:hover .g-inner{transform:scale(1.07);}
+
+  .g-inner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
 
   .gallery-a .g-item:nth-child(1){grid-column:1 / 7; aspect-ratio:4/5;}
   .gallery-a .g-item:nth-child(2){grid-column:7 / 13; aspect-ratio:3/4; margin-top:clamp(0px,10vw,90px);}
+  .gallery-a .g-item:nth-child(3){grid-column:2 / 8; aspect-ratio:1/1; margin-top:clamp(-20px,-3vw,-48px);}
+  .gallery-a .g-item:nth-child(4){grid-column:8 / 13; aspect-ratio:4/5;}
+
   .gallery-b .g-item:nth-child(1){grid-column:2 / 8; aspect-ratio:1/1;}
   .gallery-b .g-item:nth-child(2){grid-column:8 / 13; aspect-ratio:4/5; margin-top:clamp(-20px,-3vw,-48px);}
 
@@ -363,18 +381,27 @@
 
   /* ---------- mobile ---------- */
   @media (max-width:720px){
-    .gallery-grid{grid-template-columns:1fr;}
-    .g-item{grid-column:1 / -1 !important;margin-top:0 !important;aspect-ratio:4/5 !important;}
+    /* wider gallery images: shrink side gutter + tighter grid gap just for the gallery */
+    .gallery{padding-left:12px;padding-right:12px;}
+    .gallery-grid{grid-template-columns:1fr; gap:14px;}
+    .g-item{
+      grid-column:1 / -1 !important;
+      margin-top:0 !important;
+      aspect-ratio:4 / 4.3 !important; /* a touch wider/shorter than the desktop 4/5 crop */
+    }
+
+    /* perf fix: fully disable the parallax transform + hover-zoom transition on mobile,
+       remove will-change so the compositor doesn't reserve a layer for it */
+    .g-inner{
+      transform:none !important;
+      transition:none !important;
+      will-change:auto;
+    }
+    .g-item:hover .g-inner{transform:none;}
+
     .socials{flex-direction:column;gap:20px;}
     .value-row{grid-template-columns:1fr;gap:10px;}
     .value-num{font-size:1.6rem;}
-  }
-
-  .g-inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
 </style>
@@ -420,59 +447,49 @@
   </section>
 
   <!-- GALLERY A -->
- <section class="gallery gallery-a">
-  <div class="gallery-grid">
-    
-    <!-- Item 01 -->
-    <div class="g-item reveal" data-speed="0.14">
-      <div class="g-inner">
-        <img src="Leather.JPG" alt="Leather shoes">
-      </div>
-      <div class="g-add">
-        <div class=""></div><span></span>
-      </div>
-      <div class="g-label">01 — Men's Footwear</div>
-    </div>
+  <section class="gallery gallery-a">
+    <div class="gallery-grid">
 
-    <!-- Item 02 -->
-    <div class="g-item reveal" data-speed="0.22">
-      <div class="g-inner">
-        <img src="New balance.JPG" alt="New balance shoes">
+      <!-- Item 01 -->
+      <div class="g-item reveal" data-speed="0.14">
+        <div class="g-inner">
+          <img src="Leather.JPG" alt="Leather shoes">
+        </div>
+        <div class="g-label">01 — Men's Footwear</div>
       </div>
-      <div class="g-add">
-        <div class=""></div><span></span>
-      </div>
-      <div class="g-label">02 — Men's Footwear</div>
-    </div>
 
- <div class="g-item reveal" data-speed="0.22">
-      <div class="g-inner">
-        <img src="Puma.JPG" alt="Puma shoes">
+      <!-- Item 02 -->
+      <div class="g-item reveal" data-speed="0.22">
+        <div class="g-inner">
+          <img src="New balance.JPG" alt="New balance shoes">
+        </div>
+        <div class="g-label">02 — Men's Footwear</div>
       </div>
-      <div class="g-add">
-        <div class=""></div><span></span>
-      </div>
-      <div class="g-label">03 — Men's Footwear</div>
-    </div>
-  
- <div class="g-item reveal" data-speed="0.22">
-      <div class="g-inner">
-        <img src="Nike.JPG" alt="Nike slide">
-      </div>
-      <div class="g-add">
-        <div class=""></div><span></span>
-      </div>
-      <div class="g-label">04 — Men's Footwear</div>
-    </div>
 
-  </div>
-</section>
-  
+      <!-- Item 03 -->
+      <div class="g-item reveal" data-speed="0.18">
+        <div class="g-inner">
+          <img src="Puma.JPG" alt="Puma shoes">
+        </div>
+        <div class="g-label">03 — Men's Footwear</div>
+      </div>
+
+      <!-- Item 04 -->
+      <div class="g-item reveal" data-speed="0.26">
+        <div class="g-inner">
+          <img src="Nike.JPG" alt="Nike slide">
+        </div>
+        <div class="g-label">04 — Men's Footwear</div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ABOUT -->
   <section class="editorial">
     <div class="editorial-inner reveal">
       <span class="eyebrow">About Us</span>
-      <p class="about-copy">We provide <strong>high-quality products</strong>, hand-finished and built with obsessive attention to detail. What began as a men's footwear label has grown into a fuller house — a <strong>women's collection</strong> cut with the same architectural precision, and a line of <strong>signature perfumes</strong> composed to carry the same identity long after the shoes are off.</pe
+      <p class="about-copy">We provide <strong>high-quality products</strong>, hand-finished and built with obsessive attention to detail. What began as a men's footwear label has grown into a fuller house — a <strong>women's collection</strong> cut with the same architectural precision, and a line of <strong>signature perfumes</strong> composed to carry the same identity long after the shoes are off.</p>
       <p class="sub-italic">Three disciplines. One standard. Nothing leaves the atelier until it meets it.</p>
     </div>
   </section>
@@ -580,6 +597,7 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isFine = window.matchMedia('(pointer: fine)').matches;
+  var mobileMQ = window.matchMedia('(max-width: 720px)');
 
   /* ---------- staggered reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal');
@@ -616,9 +634,10 @@
     revealEls.forEach(function(el){ io.observe(el); });
   }
 
-  /* ---------- parallax drift ---------- */
+  /* ---------- parallax drift (desktop / tablet only — disabled under 720px) ---------- */
   var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('.g-item[data-speed]'));
   var ticking = false;
+  var parallaxActive = false;
 
   function updateParallax(){
     var vh = window.innerHeight;
@@ -636,16 +655,51 @@
   }
 
   function onScroll(){
-    if(!ticking && !reduceMotion){
+    if(!ticking){
       window.requestAnimationFrame(updateParallax);
       ticking = true;
     }
   }
 
-  if(!reduceMotion){
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    updateParallax();
+  function resetParallaxTransforms(){
+    parallaxEls.forEach(function(item){
+      var inner = item.querySelector('.g-inner');
+      if(inner){ inner.style.transform = 'none'; }
+    });
+  }
+
+  function setParallaxState(disable){
+    if(disable){
+      if(parallaxActive){
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+        parallaxActive = false;
+      }
+      // fully stop execution and free the transform on mobile / reduced-motion
+      resetParallaxTransforms();
+    } else {
+      if(!parallaxActive){
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        parallaxActive = true;
+      }
+      updateParallax();
+    }
+  }
+
+  // initial state: disabled on screens < 720px or when reduced motion is requested
+  setParallaxState(mobileMQ.matches || reduceMotion);
+
+  // re-evaluate on breakpoint / orientation change (e.g. rotating a phone, resizing a window)
+  if(mobileMQ.addEventListener){
+    mobileMQ.addEventListener('change', function(e){
+      setParallaxState(e.matches || reduceMotion);
+    });
+  } else if(mobileMQ.addListener){
+    // Safari < 14 fallback
+    mobileMQ.addListener(function(e){
+      setParallaxState(e.matches || reduceMotion);
+    });
   }
 
   /* ---------- magnetic buttons ---------- */
