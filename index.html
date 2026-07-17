@@ -1,1 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LOYAL BRAND — Uncompromising Quality</title>
+<meta name="description" content="LOYAL BRAND. Uncompromising Quality. Designed for the Bold.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
 
+  :root{
+    --bg:#050505;
+    --fg:#eeece6;
+    --muted:#84827c;
+    --muted-dim:#4a4945;
+    --accent:#b08d57;
+    --accent-dim:#6e5a3c;
+    --ease:cubic-bezier(.16,.84,.44,1);
+    --gutter:clamp(20px,6vw,80px);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{
+    background:var(--bg);
+    scroll-behavior:smooth;
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    cursor:none;
+  }
+
+  @media (pointer:coarse){
+    body{cursor:auto;}
+  }
+
+  ::selection{
+    background:var(--accent);
+    color:#050505;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .serif{font-family:'Fraunces',serif;}
+
+  /* ---------- grain overlay ---------- */
+  .grain{
+    position:fixed;
+    inset:0;
+    z-index:9998;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+  }
+  .grain svg{width:100%;height:100%;}
+
+  /* ---------- vignette ---------- */
+  .vignette{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* ---------- custom cursor ---------- */
+  .cursor{
+    position:fixed;
+    top:0;left:0;
+    width:10px;height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 18px 4px rgba(176,141,87,.55);
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:width .35s var(--ease),height .35s var(--ease),
+               background .35s var(--ease), box-shadow .35s var(--ease);
+    will-change:transform;
+  }
+  .cursor.hover{
+    width:52px;height:52px;
+    background:rgba(176,141,87,.12);
+    box-shadow:0 0 30px 6px rgba(176,141,87,.35);
+    border:1px solid rgba(176,141,87,.6);
+  }
+  @media (pointer:coarse){ .cursor{display:none;} }
+
+  /* ---------- reveal ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 1s var(--ease), transform 1s var(--ease);
+    will-change:transform,opacity;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- layout shells ---------- */
+  section{
+    position:relative;
+    z-index:2;
+    width:100%;
+  }
+
+  .eyebrow{
+    font-size:.7rem;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:500;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 var(--gutter);
+    gap:clamp(20px,3vw,32px);
+  }
+
+  .hero-mark{
+    font-size:.68rem;
+    letter-spacing:.5em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .hero-title{
+    font-weight:400;
+    font-size:clamp(3.2rem,13vw,9rem);
+    line-height:.92;
+    letter-spacing:-.01em;
+    color:var(--fg);
+  }
+
+  .hero-title em{
+    font-style:italic;
+    color:var(--accent);
+  }
+
+  .hero-sub{
+    font-size:clamp(.95rem,1.6vw,1.15rem);
+    color:var(--muted);
+    font-weight:300;
+    letter-spacing:.04em;
+    max-width:32ch;
+  }
+
+  .scroll-cue{
+    position:absolute;
+    bottom:clamp(24px,4vh,48px);
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    font-size:.62rem;
+    letter-spacing:.3em;
+    color:var(--muted-dim);
+    text-transform:uppercase;
+  }
+  .scroll-cue .dot{
+    width:4px;height:4px;
+    border-radius:50%;
+    background:var(--accent);
+    animation:driftDown 2.2s ease-in-out infinite;
+  }
+  @keyframes driftDown{
+    0%{transform:translateY(0);opacity:0;}
+    30%{opacity:1;}
+    100%{transform:translateY(14px);opacity:0;}
+  }
+
+  /* ---------- section heading ---------- */
+  .section-head{
+    padding:clamp(80px,14vh,160px) var(--gutter) clamp(40px,8vh,72px);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-style:italic;
+    font-size:clamp(1.8rem,4vw,3rem);
+    color:var(--fg);
+    max-width:16ch;
+  }
+
+  /* ---------- gallery ---------- */
+  .gallery{
+    padding:0 var(--gutter) clamp(60px,10vh,120px);
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:clamp(18px,3vw,40px);
+  }
+  .g-item{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(160deg,#111110 0%,#0a0a09 60%,#050505 100%);
+  }
+  .g-item::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(176,141,87,.08), transparent 55%);
+  }
+  .g-inner{
+    position:absolute;
+    inset:-6% ;
+    will-change:transform;
+    transition:transform .9s var(--ease);
+  }
+  .g-item:hover .g-inner{
+    transform:scale(1.07);
+  }
+
+  .g-item:nth-child(1){grid-column:1 / 7; aspect-ratio:4/5;}
+  .g-item:nth-child(2){grid-column:7 / 13; aspect-ratio:3/4; margin-top:clamp(0px,10vw,90px);}
+  .g-item:nth-child(3){grid-column:2 / 8; aspect-ratio:1/1; margin-top:clamp(-20px,-3vw,-48px);}
+  .g-item:nth-child(4){grid-column:8 / 13; aspect-ratio:4/5;}
+
+  .g-add{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    opacity:.28;
+    transition:opacity .5s var(--ease);
+    pointer-events:none;
+  }
+  .g-item:hover .g-add{opacity:.75;}
+  .g-add .plus{
+    width:34px;height:34px;
+    position:relative;
+  }
+  .g-add .plus::before,.g-add .plus::after{
+    content:"";
+    position:absolute;
+    background:var(--fg);
+  }
+  .g-add .plus::before{top:50%;left:0;width:100%;height:1px;transform:translateY(-50%);}
+  .g-add .plus::after{left:50%;top:0;height:100%;width:1px;transform:translateX(-50%);}
+  .g-add span{
+    font-size:.62rem;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--fg);
+  }
+
+  .g-label{
+    position:absolute;
+    bottom:18px;
+    left:18px;
+    font-size:.65rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--muted-dim);
+    z-index:2;
+  }
+
+  /* ---------- about ---------- */
+  .about{
+    padding:clamp(60px,14vh,140px) var(--gutter) clamp(80px,16vh,160px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:clamp(28px,4vw,44px);
+  }
+  .about p{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-style:italic;
+    font-size:clamp(1.6rem,4.2vw,3.2rem);
+    line-height:1.3;
+    max-width:18ch;
+    color:var(--fg);
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    padding:clamp(60px,12vh,120px) var(--gutter) clamp(100px,18vh,180px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:clamp(48px,8vh,80px);
+  }
+
+  .contact-block{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+  }
+
+  .mag-link{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:clamp(1.4rem,4.5vw,2.4rem);
+    color:var(--fg);
+    padding:6px 4px;
+    will-change:transform;
+    transition:color .4s var(--ease);
+  }
+  .mag-link:hover{color:var(--accent);}
+
+  .socials{
+    display:flex;
+    gap:clamp(28px,6vw,56px);
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .socials .mag-link{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:.85rem;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--muted);
+  }
+  .socials .mag-link:hover{color:var(--accent);}
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:32px var(--gutter) clamp(40px,6vh,60px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  footer span{
+    font-size:.65rem;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    color:var(--muted-dim);
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width:720px){
+    .gallery-grid{grid-template-columns:1fr;}
+    .g-item{grid-column:1 / -1 !important; margin-top:0 !important; aspect-ratio:4/5 !important;}
+    .socials{flex-direction:column;gap:20px;}
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- grain texture -->
+  <div class="grain">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <filter id="noiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+        <feColorMatrix type="saturate" values="0"></feColorMatrix>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#noiseFilter)"></rect>
+    </svg>
+  </div>
+
+  <div class="vignette"></div>
+  <div class="cursor" id="cursor"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-mark reveal">Est. Addis Ababa</div>
+    <h1 class="hero-title serif reveal">LOYAL <em>BRAND</em></h1>
+    <p class="hero-sub reveal">Uncompromising Quality. Designed for the Bold.</p>
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <div class="dot"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <div class="section-head">
+      <span class="eyebrow reveal">The Collection</span>
+      <h2 class="reveal">A study in quiet excess.</h2>
+    </div>
+    <div class="gallery-grid">
+
+      <div class="g-item reveal" data-speed="0.12">
+        <div class="g-inner"></div>
+        <div class="g-add"><div class="plus"></div><span>Add Image</span></div>
+        <div class="g-label">01 — Look</div>
+      </div>
+
+      <div class="g-item reveal" data-speed="0.22">
+        <div class="g-inner"></div>
+        <div class="g-add"><div class="plus"></div><span>Add Image</span></div>
+        <div class="g-label">02 — Look</div>
+      </div>
+
+      <div class="g-item reveal" data-speed="0.16">
+        <div class="g-inner"></div>
+        <div class="g-add"><div class="plus"></div><span>Add Image</span></div>
+        <div class="g-label">03 — Look</div>
+      </div>
+
+      <div class="g-item reveal" data-speed="0.26">
+        <div class="g-inner"></div>
+        <div class="g-add"><div class="plus"></div><span>Add Image</span></div>
+        <div class="g-label">04 — Look</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <span class="eyebrow reveal">About Us</span>
+    <p class="reveal">We provide high-quality products.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact">
+    <div class="contact-block">
+      <span class="eyebrow reveal">Contact Us</span>
+      <a href="tel:0993929487" class="mag-link reveal" data-magnetic>0993 929 487</a>
+      <a href="tel:0911433491" class="mag-link reveal" data-magnetic>0911 433 491</a>
+    </div>
+
+    <div class="contact-block">
+      <span class="eyebrow reveal">Follow</span>
+      <div class="socials">
+        <a href="https://t.me/Loyal3eth" target="_blank" rel="noopener" class="mag-link reveal" data-magnetic>Telegram — @Loyal3eth</a>
+        <a href="https://www.tiktok.com/@loyalbrand" target="_blank" rel="noopener" class="mag-link reveal" data-magnetic>TikTok — @loyalbrand</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Loyal Brand © 2026 — Addis Ababa</span>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isFine = window.matchMedia('(pointer: fine)').matches;
+
+  /* ---------- staggered reveal ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+
+  if(reduceMotion){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var groups = {};
+    revealEls.forEach(function(el){
+      var parent = el.closest('section') || el.parentElement;
+      var key = parent ? (parent.className || 'root') : 'root';
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(el);
+    });
+
+    var seen = new WeakSet();
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting && !seen.has(entry.target)){
+          var parent = entry.target.closest('section') || entry.target.parentElement;
+          var key = parent ? (parent.className || 'root') : 'root';
+          var siblings = groups[key] || [entry.target];
+          var idx = siblings.indexOf(entry.target);
+          var delay = Math.max(idx,0) * 110;
+          setTimeout(function(){
+            entry.target.classList.add('in');
+          }, delay);
+          seen.add(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- parallax drift ---------- */
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('.g-item[data-speed]'));
+  var ticking = false;
+
+  function updateParallax(){
+    var vh = window.innerHeight;
+    parallaxEls.forEach(function(item){
+      var rect = item.getBoundingClientRect();
+      var speed = parseFloat(item.getAttribute('data-speed')) || 0.15;
+      var center = rect.top + rect.height/2 - vh/2;
+      var offset = center * speed * -1;
+      var inner = item.querySelector('.g-inner');
+      if(inner){
+        inner.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+      }
+    });
+    ticking = false;
+  }
+
+  function onScroll(){
+    if(!ticking && !reduceMotion){
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+
+  if(!reduceMotion){
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    updateParallax();
+  }
+
+  /* ---------- magnetic buttons ---------- */
+  if(isFine && !reduceMotion){
+    var magnets = document.querySelectorAll('[data-magnetic]');
+    magnets.forEach(function(el){
+      var strength = 0.35;
+      el.addEventListener('mousemove', function(e){
+        var rect = el.getBoundingClientRect();
+        var relX = e.clientX - rect.left - rect.width/2;
+        var relY = e.clientY - rect.top - rect.height/2;
+        el.style.transform = 'translate3d(' + (relX*strength).toFixed(1) + 'px,' + (relY*strength).toFixed(1) + 'px,0)';
+      });
+      el.addEventListener('mouseleave', function(){
+        el.style.transform = 'translate3d(0,0,0)';
+      });
+    });
+  }
+
+  /* ---------- custom cursor ---------- */
+  if(isFine){
+    var cursor = document.getElementById('cursor');
+    var cx = window.innerWidth/2, cy = window.innerHeight/2;
+    var tx = cx, ty = cy;
+
+    window.addEventListener('mousemove', function(e){
+      tx = e.clientX; ty = e.clientY;
+    });
+
+    function loop(){
+      cx += (tx - cx) * 0.18;
+      cy += (ty - cy) * 0.18;
+      cursor.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    var hoverables = document.querySelectorAll('a, .g-item, [data-magnetic]');
+    hoverables.forEach(function(el){
+      el.addEventListener('mouseenter', function(){ cursor.classList.add('hover'); });
+      el.addEventListener('mouseleave', function(){ cursor.classList.remove('hover'); });
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
