@@ -256,17 +256,21 @@
   .g-add .plus::after{left:50%;top:0;height:100%;width:1px;transform:translateX(-50%);}
   .g-add span{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fg);}
 
-   .g-label {
-    display: none;
+    .g-label {
     position: absolute;
     bottom: 18px;
     left: 18px;
     z-index: 2;
-    font-size: .65rem;
-    letter-spacing: .2em;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted-dim);
+    color: #ffffff; /* Using white for maximum visibility */
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    padding: 6px 12px;
+    border-radius: 4px;
   }
+
 
 
   /* ---------- philosophy / brand values ---------- */
